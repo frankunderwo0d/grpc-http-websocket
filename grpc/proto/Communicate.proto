@@ -1,0 +1,19 @@
+syntax="proto3";
+
+option go_package="active;proto";
+package proto;
+
+message CRequest {
+  uint32 protocol_id = 1; // 协议ID
+  bytes data = 2;         // 具体结构体序列化数据
+}
+
+message CResponse {
+  int64 status_code = 1;  // 状态码
+  uint32 protocol_id = 2; // 协议ID
+  bytes data = 3;         // 具体结构体序列化数据
+}
+
+service Communication {
+  rpc Send(CRequest) returns (CResponse) {}
+}

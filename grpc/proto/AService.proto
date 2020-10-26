@@ -1,0 +1,39 @@
+syntax="proto3";
+
+option go_package="active;proto"; // 生成的go文件package
+package proto; // 设定proto文件自身的package
+
+enum Method {
+  Get = 0;
+  Post = 1;
+  Option = 2;
+  Delete = 3;
+}
+
+message Request {
+  string path = 1;                  // 请求路径
+  Method method = 2;                // 请求方法
+  map<string,string> headers = 3;   // 请求头
+  map<string,string> params = 4;    // 请求体
+}
+
+message Response {
+  int64 status_code = 1;            // 状态码
+  string status_msg = 2;            // 状态语句
+  bytes data = 3;                   // 响应数据
+}
+
+// AService 服务
+service AService {
+  // 1.简单的rpc请求
+  rpc GetFeature(Request) returns (Response) {}
+
+  // 2.服务器端流式rpc
+  rpc ListFeature(Request) returns (stream Response) {}
+
+  // 3.客户端流式rpc
+  rpc RecordFeature(stream Request) returns (Response) {}
+
+  // 4.双向流式RPC
+  rpc FeatureChat(stream Request) returns (stream Response) {}
+}
